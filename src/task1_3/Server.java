@@ -13,33 +13,28 @@ public class Server {
     public static void main(String[] args) {
         try {
             try {
-                server = new ServerSocket(4004); // серверсокет прослушивает порт 4004
-                System.out.println("Сервер запущен!"); // хорошо бы серверу
-                //   объявить о своем запуске
-                clientSocket = server.accept(); // accept() будет ждать пока
-                //кто-нибудь не захочет подключиться
-                try { // установив связь и воссоздав сокет для общения с клиентом можно перейти
-                    // к созданию потоков ввода/вывода.
-                    // теперь мы можем принимать сообщения
+                server = new ServerSocket(565); // назначим порт 565
+                System.out.println("Server is running!"); // объявим, что сервер работает
+                clientSocket = server.accept(); // accept() будет ждать подключения от студента
+
+                try { // установив связь и воссоздав сокет для общения с клиентом можно перейти к созданию потоков ввода/вывода.
                     in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                     // и отправлять
                     out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
 
                     String archive = in.readLine(); // ждём пока клиент что-нибудь нам напишет
                     System.out.println(archive);
-                    // не долго думая отвечает клиенту
-                    out.write("Привет, это Сервер! Подтверждаю, вы написали : " + archive + "\n");
+                    out.write("Server response: received a message from a student : " + archive + "\n");
                     out.flush(); // выталкиваем все из буфера
 
-                } finally { // в любом случае сокет будет закрыт
-                    System.out.println("dfjkhgkdf");
+                } finally { // закрываем сокет и потоки
+                    System.out.println(" ");
                     clientSocket.close();
-                    // потоки тоже хорошо бы закрыть
                     in.close();
                     out.close();
                 }
             } finally {
-                System.out.println("Сервер закрыт!");
+                System.out.println("Server is closed!");
                 server.close();
             }
         } catch (IOException e) {
